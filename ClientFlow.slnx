@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="ClientFlow.API/ClientFlow.API.csproj" />
+  <Project Path="ClientFlow.Shared/ClientFlow.Shared.csproj" />
+  <Project Path="ClientFlow.UI/ClientFlow.UI.csproj" />
+</Solution>
