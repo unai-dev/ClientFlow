@@ -1,0 +1,16 @@
+﻿<div class="form-group">
+    <label>@Label</label>
+    <InputNumber Value="@Value" ValueChanged="@ValueChanged" ValueExpression="@ValueExpression" class="form-control mb-3" placeholder="@Placeholder" />
+
+    <ValidationMessage For="@ValueExpression" class="validation-error" />
+</div>
+
+
+@code {
+    [Parameter, EditorRequired] public string Label { get; set; }
+    [Parameter] public string Placeholder { get; set; } = string.Empty;
+    [Parameter] public long Value { get; set; }
+    [Parameter] public EventCallback<long> ValueChanged { get; set; }
+    [Parameter] public Expression<Func<long>> ValueExpression { get; set; } = null!;
+
+}

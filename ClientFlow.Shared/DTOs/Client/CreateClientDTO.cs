@@ -13,7 +13,6 @@ namespace ClientFlow.Shared.DTOs.Client
         [Required(ErrorMessage = "The field {0} is required"), EmailAddress]
         public string? Email { get; set; }
 
-        [Phone]
         public long Phone { get; set; }
 
         public string? Company { get; set; }

@@ -1,0 +1,46 @@
+@using ClientFlow.Shared.DTOs.Client
+
+<div class="client-card">
+    <div class="client-card-content">
+        <!-- Fila de datos -->
+        <div class="client-row">
+            <div class="client-column">
+                <span class="client-label">Nombre</span>
+                <span class="client-value">@Client?.FullName</span>
+            </div>
+            <div class="client-column">
+                <span class="client-label">Email</span>
+                <span class="client-value">@Client?.Email</span>
+            </div>
+            <div class="client-column">
+                <span class="client-label">Teléfono</span>
+                <span class="client-value">@(Client?.Phone?.ToString() ?? "N/A")</span>
+            </div>
+            <div class="client-column">
+                <span class="client-label">Empresa</span>
+                <span class="client-value">@Client?.Company</span>
+            </div>
+            <div class="client-column">
+                <span class="client-label">Puesto</span>
+                <span class="client-value">@Client?.Position</span>
+            </div>
+        </div>
+
+        <!-- Fila de acciones -->
+        <div class="client-actions">
+            <button class="btn-view" @onclick="@(() => OnView.InvokeAsync())">Ver</button>
+            <button class="btn-delete" @onclick="@(() => OnDelete.InvokeAsync())">Eliminar</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public ClientDTO? Client { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback OnView { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback OnDelete { get; set; }
+}

@@ -1,0 +1,140 @@
+﻿.client-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin-bottom: 12px;
+    transition: all 0.3s ease;
+}
+
+    .client-card:hover {
+        box-shadow: 0 4px 16px rgba(102, 126, 234, 0.15);
+        transform: translateY(-2px);
+    }
+
+.client-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.client-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    align-items: center;
+}
+
+.client-column {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.client-label {
+    font-size: 12px;
+    color: #999;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.client-value {
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+    word-break: break-word;
+}
+
+.client-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    padding-top: 8px;
+    border-top: 1px solid #eee;
+}
+
+.btn-view,
+.btn-delete {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-view {
+    background: #667eea;
+    color: white;
+}
+
+    .btn-view:hover {
+        background: #5568d3;
+        transform: translateY(-1px);
+    }
+
+.btn-delete {
+    background: #e74c3c;
+    color: white;
+}
+
+    .btn-delete:hover {
+        background: #c0392b;
+        transform: translateY(-1px);
+    }
+
+    .btn-view:active,
+    .btn-delete:active {
+        transform: translateY(0);
+    }
+
+@media (max-width: 768px) {
+    .client-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .client-actions {
+        gap: 6px;
+    }
+
+    .btn-view,
+    .btn-delete {
+        padding: 6px 12px;
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 480px) {
+    .client-card {
+        padding: 12px;
+        margin-bottom: 10px;
+    }
+
+    .client-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .client-label {
+        font-size: 11px;
+    }
+
+    .client-value {
+        font-size: 13px;
+    }
+
+    .client-actions {
+        flex-direction: column;
+    }
+
+    .btn-view,
+    .btn-delete {
+        width: 100%;
+        padding: 10px;
+    }
+}

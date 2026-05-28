@@ -1,0 +1,75 @@
+﻿@implements IDisposable
+
+<div class="container">
+
+    <div class="form-group">
+        <EditForm EditContext="@editContext" OnValidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator />
+
+            <BPInputText Label="Nombre*" Placeholder="Unai Villar Lopez" @bind-Value="CreateClient.FullName" />
+            <BPInputText Label="Email" Placeholder="unaivl123@gmail.com" @bind-Value="CreateClient.Email" />
+
+            <BPInputNumber Label="Telefono" Placeholder="123456789" @bind-Value="CreateClient.Phone" />
+
+            <BPInputText Label="Empresa" Placeholder="Vodafone" @bind-Value="CreateClient.Company" />
+            <BPInputText Label="Puesto" Placeholder="Desarrollador Backend" @bind-Value="CreateClient.Position" />
+
+            <BPButton Disabled="CurrentPost | invalidForm">
+                @if (CurrentPost)
+                {
+                    <span>Agregando...</span>
+                }
+                else
+                {
+                    <span>Agregar Cliente</span>
+                }
+            </BPButton>
+        </EditForm>
+    </div>
+</div>
+
+
+
+
+@code {
+
+    [Parameter, EditorRequired] public bool CurrentPost { get; set; } = false;
+    [Parameter, EditorRequired] public CreateClientDTO CreateClient { get; set; }
+    [Parameter, EditorRequired] public EventCallback OnValidSubmit { get; set; }
+
+    private EditContext? editContext;
+    private bool invalidForm = true;
+
+    protected override void OnInitialized()
+    {
+        editContext = new(CreateClient);
+        editContext.OnFieldChanged += HandleFieldChanged;
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (editContext is not null && editContext.Validate())
+        {
+
+            await OnValidSubmit.InvokeAsync();
+        }
+    }
+
+    private void HandleFieldChanged(object? sender, FieldChangedEventArgs e)
+    {
+        if (editContext is not null)
+        {
+            invalidForm = !editContext.Validate();
+            StateHasChanged();
+
+        }
+    }
+
+    public void Dispose()
+    {
+        if (editContext is not null)
+        {
+            editContext.OnFieldChanged -= HandleFieldChanged;
+        }
+    }
+}

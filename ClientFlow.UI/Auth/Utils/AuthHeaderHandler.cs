@@ -18,7 +18,7 @@ namespace ClientFlow.UI.Auth.Utils
 
             if (!string.IsNullOrEmpty(token))
             {
-                request.Headers.Authorization = new AuthenticationHeaderValue("Berer", token);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
 
             return await base.SendAsync(request, cancellationToken);

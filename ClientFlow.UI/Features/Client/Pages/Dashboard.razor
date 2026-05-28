@@ -1,0 +1,157 @@
+﻿@page "/dashboard"
+@using ClientFlow.UI.Features.Client.Components
+@using ClientFlow.UI.Features.Client.Interfaces
+@using ClientFlow.Shared.DTOs.Client
+@inject IClientService ClientService
+@inject NavigationManager NavManager
+@inject ILocalStorageService LocalStorage
+
+<div class="dashboard-container">
+    @if (isAuthenticated)
+    {
+        <!-- Contenido del dashboard -->
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Dashboard</h1>
+            <p class="dashboard-subtitle">Gestiona tu cartera de clientes</p>
+        </div>
+
+        <!-- Componente de lista de clientes -->
+        <ClientList Clients="clients"
+                    NewClient="newClient"
+                    ShowCreateForm="showCreateForm"
+                    IsLoading="isLoading"
+                    IsCreating="isCreating"
+                    OnCreateButtonClick="HandleOpenCreateForm"
+                    OnCloseForm="HandleCloseCreateForm"
+                    OnFormSubmitted="HandleCreateClient"
+                    OnClientView="HandleViewClient"
+                    OnClientDelete="HandleDeleteClient" />
+    }
+    else
+    {
+        <div class="no-auth-container">
+            <div class="no-auth-card">
+                <h2>Acceso Denegado</h2>
+                <p>Por favor, inicia sesión para acceder al dashboard</p>
+                <a href="/auth/login" class="btn-login">Ir a Login</a>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private bool isAuthenticated = false;
+    private List<ClientDTO?> clients = new();
+    private CreateClientDTO newClient = new();
+    private bool showCreateForm = false;
+    private bool isLoading = true;
+    private bool isCreating = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Verificar si el usuario está autenticado
+        try
+        {
+            var token = await LocalStorage.GetItemLocalStorageAsync("token");
+            isAuthenticated = !string.IsNullOrEmpty(token);
+
+            if (!isAuthenticated)
+            {
+                // Redirigir a login si no está autenticado
+                NavManager.NavigateTo("/auth/login");
+            }
+            else
+            {
+                // Cargar clientes si está autenticado
+                await LoadClients();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error verificando autenticación: {ex.Message}");
+            NavManager.NavigateTo("/auth/login");
+        }
+    }
+
+    private async Task LoadClients()
+    {
+        try
+        {
+            isLoading = true;
+            clients = await ClientService.GetClientsAsync() ?? new();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error cargando clientes: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private void HandleOpenCreateForm()
+    {
+        showCreateForm = true;
+        newClient = new CreateClientDTO();
+    }
+
+    private void HandleCloseCreateForm()
+    {
+        showCreateForm = false;
+        newClient = new CreateClientDTO();
+    }
+
+    private async Task HandleCreateClient()
+    {
+        isCreating = true;
+        try
+        {
+            var result = await ClientService.CreateClientAsync(newClient);
+            if (result != null)
+            {
+                HandleCloseCreateForm();
+                await LoadClients();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error creando cliente: {ex.Message}");
+        }
+        finally
+        {
+            isCreating = false;
+        }
+    }
+
+    private void HandleViewClient(ClientDTO client)
+    {
+        // TODO: Implementar navegación a detalle del cliente o modal de visualización
+        Console.WriteLine($"Ver cliente: {client.FullName}");
+    }
+
+    private async Task HandleDeleteClient(int clientId)
+    {
+        if (!await ConfirmDelete())
+            return;
+
+        try
+        {
+            var result = await ClientService.DeleteClientAsync(clientId);
+            if (result == true)
+            {
+                await LoadClients();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error eliminando cliente: {ex.Message}");
+        }
+    }
+
+    private async Task<bool> ConfirmDelete()
+    {
+        // TODO: Implementar modal de confirmación bonito
+        return await Task.FromResult(true);
+    }
+}

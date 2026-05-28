@@ -1,6 +1,7 @@
 ﻿<div class="form-group">
-    <label>@Label</label>
-    <InputText Value="@Value" ValueChanged="@ValueChanged" ValueExpression="@ValueExpression" class="form-input" placeholder="@Placeholder" />
+    <label class="form-label">@Label</label>
+
+    <InputText Value="@Value" ValueChanged="@ValueChanged" ValueExpression="@ValueExpression" class="form-control mb-3" placeholder="@Placeholder" />
 
     <ValidationMessage For="@ValueExpression" class="validation-error" />
 </div>

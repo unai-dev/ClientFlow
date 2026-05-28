@@ -1,6 +1,10 @@
 using ClientFlow.UI;
 using ClientFlow.UI.Auth.Utils;
 using ClientFlow.UI.Features.Auth.Services;
+using ClientFlow.UI.Features.Client.Interfaces;
+using ClientFlow.UI.Features.Client.Services;
+using ClientFlow.UI.Features.ClientNotes.Interfaces;
+using ClientFlow.UI.Features.ClientNotes.Services;
 using ClientFlow.UI.Shared.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -24,5 +28,7 @@ builder.Services.AddScoped(sp =>
 });
 
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IClientNotesService, ClientNotesService>();
 
 await builder.Build().RunAsync();
