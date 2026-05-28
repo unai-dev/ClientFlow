@@ -21,11 +21,18 @@
                     ShowCreateForm="showCreateForm"
                     IsLoading="isLoading"
                     IsCreating="isCreating"
+                    ShowDeleteModal="showDeleteModal"
+                    ClientIdToDelete="clientIdToDelete"
+                    ShowClientDetails="showClientDetailsModal"
+                    SelectedClient="selectedClient"
                     OnCreateButtonClick="HandleOpenCreateForm"
                     OnCloseForm="HandleCloseCreateForm"
                     OnFormSubmitted="HandleCreateClient"
                     OnClientView="HandleViewClient"
-                    OnClientDelete="HandleDeleteClient" />
+                    OnClientDelete="HandleOpenDeleteModal"
+                    OnConfirmDelete="HandleConfirmDelete"
+                    OnClientCancel="HandleCancelDelete"
+                    OnCloseClientView="HandleCloseClientDetails" />
     }
     else
     {
@@ -40,16 +47,21 @@
 </div>
 
 @code {
-    private bool isAuthenticated = false;
     private List<ClientDTO?> clients = new();
     private CreateClientDTO newClient = new();
+    private ClientDTO selectedClient = new();
+
+    private bool isAuthenticated = false;
     private bool showCreateForm = false;
     private bool isLoading = true;
     private bool isCreating = false;
+    private bool showDeleteModal = false;
+    private bool showClientDetailsModal = false;
+
+    private int clientIdToDelete = 0;
 
     protected override async Task OnInitializedAsync()
     {
-        // Verificar si el usuario está autenticado
         try
         {
             var token = await LocalStorage.GetItemLocalStorageAsync("token");
@@ -57,12 +69,10 @@
 
             if (!isAuthenticated)
             {
-                // Redirigir a login si no está autenticado
                 NavManager.NavigateTo("/auth/login");
             }
             else
             {
-                // Cargar clientes si está autenticado
                 await LoadClients();
             }
         }
@@ -124,22 +134,40 @@
         }
     }
 
-    private void HandleViewClient(ClientDTO client)
+    private async Task HandleViewClient(ClientDTO client)
     {
-        // TODO: Implementar navegación a detalle del cliente o modal de visualización
-        Console.WriteLine($"Ver cliente: {client.FullName}");
+        try
+        {
+            selectedClient = await ClientService.GetClientAsync(client.Id);
+            Console.WriteLine($"Cliente selecionado: {client}");
+            showClientDetailsModal = true;
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al obtener usuario con id: {client.Id}. Mensaje: {ex.Message}");
+        }
+        finally
+        {
+            showClientDetailsModal = false;
+        }
+
     }
 
-    private async Task HandleDeleteClient(int clientId)
+    private void HandleOpenDeleteModal(int clientId)
     {
-        if (!await ConfirmDelete())
-            return;
+        clientIdToDelete = clientId;
+        showDeleteModal = true;
+    }
 
+    private async Task HandleConfirmDelete(int clientId)
+    {
         try
         {
             var result = await ClientService.DeleteClientAsync(clientId);
             if (result == true)
             {
+                HandleCancelDelete();
                 await LoadClients();
             }
         }
@@ -149,9 +177,15 @@
         }
     }
 
-    private async Task<bool> ConfirmDelete()
+    private void HandleCancelDelete()
     {
-        // TODO: Implementar modal de confirmación bonito
-        return await Task.FromResult(true);
+        showDeleteModal = false;
+        clientIdToDelete = 0;
+    }
+
+    private void HandleCloseClientDetails()
+    {
+        selectedClient = new();
+        showClientDetailsModal = false;
     }
 }

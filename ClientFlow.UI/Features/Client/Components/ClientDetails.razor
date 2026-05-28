@@ -1,0 +1,29 @@
+﻿<div class="modal-dialog">
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Detalles del Cliente</h3>
+            <button @onclick="HandleOnClose">X</button>
+        </div>
+
+        <div class="modal-body">
+            <span class="mb-3">Nombre: @Client.FullName</span>
+            <span class="mb-3">Email: @Client.Email</span>
+            <span class="mb-3">Numero: @Client.Phone</span>
+        </div>
+
+    </div>
+
+</div>
+
+@code {
+
+    [Parameter, EditorRequired] public ClientDTO? Client { get; set; }
+    [Parameter, EditorRequired] public EventCallback OnClose { get; set; }
+
+
+    public async Task HandleOnClose()
+    {
+        await OnClose.InvokeAsync();
+    }
+}

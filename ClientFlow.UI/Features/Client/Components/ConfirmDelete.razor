@@ -1,0 +1,48 @@
+﻿
+<!-- Overlay oscuro -->
+<div class="modal-overlay" @onclick="HandleCancel"></div>
+
+<!-- Modal -->
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Confirmar Eliminación</h3>
+            <button class="btn-close-modal" @onclick="HandleCancel">✕</button>
+        </div>
+
+        <div class="modal-body">
+            <p class="modal-message">
+                ¿Estás seguro de que deseas eliminar este cliente?
+            </p>
+            <p class="modal-warning">
+                Esta acción no se puede deshacer.
+            </p>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn-cancel" @onclick="HandleCancel">Cancelar</button>
+            <button class="btn-confirm-delete" @onclick="HandleConfirm">Eliminar</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public int ClientId { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback<int> OnDelete { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback OnCancel { get; set; }
+
+    private async Task HandleCancel()
+    {
+        await OnCancel.InvokeAsync();
+    }
+
+    private async Task HandleConfirm()
+    {
+        await OnDelete.InvokeAsync(ClientId);
+    }
+}

@@ -1,10 +1,29 @@
-﻿<button type="submit" class="btn btn-primary w-100" disabled="@Disabled">
+﻿<button type="submit" class="@GetButtonClasses" disabled="@Disabled" @onclick="@OnClick">
     @ChildContent
 </button>
 
 @code {
 
-    [Parameter, EditorRequired] public bool Disabled { get; set; } = false;
+    [Parameter] public bool Disabled { get; set; } = false;
     [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; }
+    [Parameter] public EventCallback OnClick { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+
+    private string GetButtonClasses
+    {
+        get
+        {
+            var classes = string.Empty;
+
+            if (AdditionalAttributes is not null && AdditionalAttributes.ContainsKey("class"))
+            {
+                classes = AdditionalAttributes["class"]?.ToString();
+            }
+
+            return string.Join(" ", classes);
+        }
+
+    }
 
 }

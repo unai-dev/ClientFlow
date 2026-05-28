@@ -45,10 +45,24 @@
             {
                 <ClientCard Client="client"
                             OnView="@(() => OnClientView.InvokeAsync(client))"
-                            OnDelete="@(() => OnClientDelete.InvokeAsync(client.Id))" />
+                            OnDelete="@((id) => OnClientDelete.InvokeAsync(id))" />
             }
         }
     </div>
+
+    <!-- Modal de confirmación de eliminación -->
+    @if (ShowDeleteModal)
+    {
+        <ConfirmDelete 
+            ClientId="ClientIdToDelete"
+            OnDelete="OnConfirmDelete"
+            OnCancel="OnClientCancel" />
+    }
+
+    @if (ShowClientDetails)
+    {
+        <ClientDetails Client="SelectedClient" OnClose="OnCloseClientView" />
+    }
 </div>
 
 @code {
@@ -56,10 +70,22 @@
     public List<ClientDTO> Clients { get; set; } = new();
 
     [Parameter]
+    public ClientDTO? SelectedClient { get; set; } = new();
+
+    [Parameter]
     public CreateClientDTO NewClient { get; set; } = new();
+
+    [Parameter, EditorRequired]
+    public int ClientIdToDelete { get; set; }
 
     [Parameter]
     public bool ShowCreateForm { get; set; } = false;
+
+    [Parameter]
+    public bool ShowClientDetails { get; set; } = false;
+
+    [Parameter]
+    public bool ShowDeleteModal { get; set; } = false;
 
     [Parameter]
     public bool IsLoading { get; set; } = false;
@@ -80,7 +106,18 @@
     public EventCallback<ClientDTO> OnClientView { get; set; }
 
     [Parameter, EditorRequired]
+    public EventCallback OnCloseClientView { get; set; }
+
+    [Parameter, EditorRequired]
     public EventCallback<int> OnClientDelete { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback<int> OnConfirmDelete { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback OnClientCancel { get; set; }
+
+
 
     private async Task OnCreateClick()
     {

@@ -29,7 +29,7 @@
         <!-- Fila de acciones -->
         <div class="client-actions">
             <button class="btn-view" @onclick="@(() => OnView.InvokeAsync())">Ver</button>
-            <button class="btn-delete" @onclick="@(() => OnDelete.InvokeAsync())">Eliminar</button>
+            <button class="btn-delete" @onclick="@(() => OnDelete.InvokeAsync(Client!.Id))">Eliminar</button>
         </div>
     </div>
 </div>
@@ -39,8 +39,8 @@
     public ClientDTO? Client { get; set; }
 
     [Parameter, EditorRequired]
-    public EventCallback OnView { get; set; }
+    public EventCallback<ClientDTO?> OnView { get; set; }
 
     [Parameter, EditorRequired]
-    public EventCallback OnDelete { get; set; }
+    public EventCallback<int> OnDelete { get; set; }
 }
