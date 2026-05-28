@@ -1,0 +1,57 @@
+﻿
+<div class="auth-container">
+    <div class="auth-card">
+        <!-- Título del formulario -->
+        <h2 class="auth-title">@FormTitle</h2>
+
+        <!-- Formulario con validación -->
+        <EditForm EditContext="@editContext" OnSubmit="@HandleValidSumbit" class="auth-form">
+            <DataAnnotationsValidator />
+
+            <!-- Contenedor de inputs -->
+            <div class="form-inputs">
+                <BPInputText Label="Email" Placeholder="Introduce un email" @bind-Value="@Credentials.Email" />
+
+                <BPInputText Label="Password" Placeholder="Introduce un password" @bind-Value="@Credentials.Password" />
+            </div>
+
+            <!-- Botón Submit -->
+            <div class="form-actions">
+                <BPButton Disabled="@CurrentPost">
+                    @if (CurrentPost)
+                    {
+                        <span class="btn-loading">Procesando...</span>
+                    }
+                    else
+                    {
+                        <span>@FormTitle</span>
+                    }
+                </BPButton>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public CredentialsDTO Credentials { get; set; }
+    [Parameter, EditorRequired] public bool CurrentPost { get; set; } = false;
+    [Parameter] public string FormTitle { get; set; } = "Iniciar Sesion";
+    [Parameter, EditorRequired] public EventCallback OnSubmit { get; set; }
+
+    private EditContext? editContext;
+
+    protected override void OnInitialized()
+    {
+        editContext = new EditContext(Credentials);
+    }
+
+    private async Task HandleValidSumbit()
+    {
+        if (editContext is not null && editContext.Validate())
+        {
+            await OnSubmit.InvokeAsync();
+        }
+    }
+
+
+}

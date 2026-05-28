@@ -1,4 +1,6 @@
 using ClientFlow.UI;
+using ClientFlow.UI.Auth.Utils;
+using ClientFlow.UI.Features.Auth.Services;
 using ClientFlow.UI.Shared.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -8,6 +10,19 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddTransient<ILocalStorageService, LocalStorageService>();
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+builder.Services.AddScoped<AuthHeaderHandler>();
+
+builder.Services.AddHttpClient("ApiClient", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7226/v1/api/");
+}).AddHttpMessageHandler<AuthHeaderHandler>();
+
+builder.Services.AddScoped(sp =>
+{
+    var factory = sp.GetRequiredService<IHttpClientFactory>();
+    return factory.CreateClient("ApiClient");
+});
+
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 await builder.Build().RunAsync();

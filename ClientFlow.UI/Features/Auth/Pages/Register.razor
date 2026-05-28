@@ -1,0 +1,92 @@
+@page "/auth/register"
+@inject NavigationManager NavManager
+@inject IAuthService AuthService
+@inject ILocalStorageService LocalStorage
+
+<!-- Verificar autenticación al cargar -->
+@if (isLoading)
+{
+    <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <div style="background: white; padding: 40px; border-radius: 12px; text-align: center;">
+            <p style="margin: 0; color: #667eea; font-weight: 600;">Cargando...</p>
+        </div>
+    </div>
+}
+else
+{
+    <div style="position: relative;">
+        <!-- Componente del formulario de registro -->
+        <AuthForm Credentials="credentials"
+                  CurrentPost="isPosting"
+                  FormTitle="Crear Cuenta"
+                  OnSubmit="HandleRegister" />
+
+        <!-- Link al login -->
+        <div style="text-align: center; margin-top: 20px;">
+            <p style="color: #666; font-size: 14px; margin: 0;">
+                ¿Ya tienes cuenta?
+                <a href="/auth/login" style="color: #667eea; text-decoration: none; font-weight: 600; cursor: pointer;">Inicia sesión aquí</a>
+            </p>
+        </div>
+    </div>
+}
+
+@code {
+    private CredentialsDTO credentials = new();
+    private bool isPosting = false;
+    private bool isLoading = true;
+    private string errorMessage = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+       
+        try
+        {
+            var token = await LocalStorage.GetItemLocalStorageAsync("token");
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                NavManager.NavigateTo("/dashboard");
+                return;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error verificando autenticación: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task HandleRegister()
+    {
+        isPosting = true;
+
+        try
+        {
+            var response = await AuthService.Register(credentials);
+
+            if (!string.IsNullOrEmpty(response!.Token))
+            {
+                await LocalStorage.SetItemLocalStorageAsync("token", response.Token);
+                NavManager.NavigateTo("/dashboard");
+            }
+            else
+            {
+                errorMessage = response.ToString()!;
+            }
+
+            Console.WriteLine("Registro procesando...");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error en registro: {ex.Message}");
+        }
+        finally
+        {
+            isPosting = false;
+        }
+    }
+}

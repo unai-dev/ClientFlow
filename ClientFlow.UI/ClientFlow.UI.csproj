@@ -16,7 +16,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Features\Auth\" />
+	  <ProjectReference Include="..\ClientFlow.Shared\ClientFlow.Shared.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Features\Client\Components\" />
+	  <Folder Include="Features\Client\Pages\" />
 	</ItemGroup>
 
 </Project>

@@ -13,17 +13,17 @@ namespace ClientFlow.UI.Shared.Services
 
         public async Task SetItemLocalStorageAsync(string key, string value)
         {
-            await jSRuntime.InvokeVoidAsync("setItemLocalStorage", key, value);
+            await jSRuntime.InvokeVoidAsync("localStorage.setItem", key, value);
         }
 
         public async Task<string?> GetItemLocalStorageAsync(string key)
         {
-            return await jSRuntime.InvokeAsync<string?>("getItemLocalStorage", key);
+            return await jSRuntime.InvokeAsync<string?>("localStorage.getItem", key);
         }
 
         public async Task RemoveItemLocalStorage(string key)
         {
-            await jSRuntime.InvokeVoidAsync("removeItemLocalStorage", key);
+            await jSRuntime.InvokeVoidAsync("localStorage.removeItem", key);
         }
 
     }

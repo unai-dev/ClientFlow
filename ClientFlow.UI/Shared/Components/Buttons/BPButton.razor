@@ -1,0 +1,10 @@
+﻿<button type="submit" class="btn-submit" disabled="@Disabled">
+    @ChildContent
+</button>
+
+@code {
+
+    [Parameter, EditorRequired] public bool Disabled { get; set; } = false;
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; }
+
+}
