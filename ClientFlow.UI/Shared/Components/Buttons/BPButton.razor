@@ -1,4 +1,4 @@
-﻿<button type="submit" class="@GetButtonClasses" disabled="@Disabled" @onclick="@OnClick">
+﻿<button type="submit" class="@GetButtonClasses" disabled="@Disabled" @onclick="@(() => OnClick.InvokeAsync())">
     @ChildContent
 </button>
 

@@ -28,8 +28,8 @@
 
         <!-- Fila de acciones -->
         <div class="client-actions">
-            <button class="btn-view" @onclick="@(() => OnView.InvokeAsync())">Ver</button>
-            <button class="btn-delete" @onclick="@(() => OnDelete.InvokeAsync(Client!.Id))">Eliminar</button>
+            <BPButton class="btn btn-warning" OnClick="@(() => OnView.InvokeAsync())">Ver</BPButton>
+            <BPButton class="btn btn-danger" OnClick="@(() => OnDelete.InvokeAsync(Client!.Id))">Eliminar</BPButton>
         </div>
     </div>
 </div>

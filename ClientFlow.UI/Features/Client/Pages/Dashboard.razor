@@ -1,7 +1,4 @@
-﻿@page "/dashboard"
-@using ClientFlow.UI.Features.Client.Components
-@using ClientFlow.UI.Features.Client.Interfaces
-@using ClientFlow.Shared.DTOs.Client
+﻿@page "/"
 @inject IClientService ClientService
 @inject NavigationManager NavManager
 @inject ILocalStorageService LocalStorage
@@ -25,8 +22,8 @@
                     ClientIdToDelete="clientIdToDelete"
                     ShowClientDetails="showClientDetailsModal"
                     SelectedClient="selectedClient"
-                    OnCreateButtonClick="HandleOpenCreateForm"
-                    OnCloseForm="HandleCloseCreateForm"
+
+                    OnCreateButtonClick="HandleClickCreateForm" 
                     OnFormSubmitted="HandleCreateClient"
                     OnClientView="HandleViewClient"
                     OnClientDelete="HandleOpenDeleteModal"
@@ -88,7 +85,7 @@
         try
         {
             isLoading = true;
-            clients = await ClientService.GetClientsAsync() ?? new();
+            clients = await ClientService.GetClientsAsync();
         }
         catch (Exception ex)
         {
@@ -100,27 +97,19 @@
         }
     }
 
-    private void HandleOpenCreateForm()
-    {
-        showCreateForm = true;
-        newClient = new CreateClientDTO();
-    }
 
-    private void HandleCloseCreateForm()
-    {
-        showCreateForm = false;
-        newClient = new CreateClientDTO();
-    }
 
     private async Task HandleCreateClient()
     {
         isCreating = true;
+
         try
         {
             var result = await ClientService.CreateClientAsync(newClient);
-            if (result != null)
+
+            if (result is not null)
             {
-                HandleCloseCreateForm();
+                HandleClickCreateForm();
                 await LoadClients();
             }
         }
@@ -138,26 +127,15 @@
     {
         try
         {
-            selectedClient = await ClientService.GetClientAsync(client.Id);
-            Console.WriteLine($"Cliente selecionado: {client}");
+            selectedClient = await ClientService.GetClientAsync(client.Id) ?? new();
             showClientDetailsModal = true;
+            Console.WriteLine($"Cliente selecionado: {selectedClient.FullName}");
 
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error al obtener usuario con id: {client.Id}. Mensaje: {ex.Message}");
+            Console.WriteLine($"Error al obtener usuario: {ex.Message}");
         }
-        finally
-        {
-            showClientDetailsModal = false;
-        }
-
-    }
-
-    private void HandleOpenDeleteModal(int clientId)
-    {
-        clientIdToDelete = clientId;
-        showDeleteModal = true;
     }
 
     private async Task HandleConfirmDelete(int clientId)
@@ -165,7 +143,8 @@
         try
         {
             var result = await ClientService.DeleteClientAsync(clientId);
-            if (result == true)
+
+            if (result is not null)
             {
                 HandleCancelDelete();
                 await LoadClients();
@@ -175,6 +154,18 @@
         {
             Console.WriteLine($"Error eliminando cliente: {ex.Message}");
         }
+    }
+
+    private void HandleClickCreateForm()
+    {
+        showCreateForm = !showCreateForm;
+        newClient = new CreateClientDTO();
+    }
+
+    private void HandleOpenDeleteModal(int clientId)
+    {
+        clientIdToDelete = clientId;
+        showDeleteModal = true;
     }
 
     private void HandleCancelDelete()

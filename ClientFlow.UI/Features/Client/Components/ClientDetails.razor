@@ -1,28 +1,94 @@
-﻿<div class="modal-dialog">
+﻿<!-- Overlay oscuro -->
+<div class="modal-overlay-details" @onclick="HandleOnClose"></div>
 
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3 class="modal-title">Detalles del Cliente</h3>
-            <button @onclick="HandleOnClose">X</button>
+<!-- Modal de detalles -->
+<div class="modal-dialog-details">
+    <div class="modal-content-details">
+        <!-- Header -->
+        <div class="modal-header-details">
+            <h2 class="modal-title-details">Detalles del Cliente</h2>
+            <BPButton class="border-0 bg-transparent" OnClick="HandleOnClose">❌</BPButton>
         </div>
 
-        <div class="modal-body">
-            <span class="mb-3">Nombre: @Client.FullName</span>
-            <span class="mb-3">Email: @Client.Email</span>
-            <span class="mb-3">Numero: @Client.Phone</span>
+        <!-- Body con datos del cliente -->
+        <div class="modal-body-details">
+            <!-- Grid de información -->
+            <div class="client-info-grid">
+                <!-- Nombre Completo -->
+                <div class="info-section">
+                    <label class="info-label">Nombre Completo</label>
+                    <p class="info-value">@Client?.FullName</p>
+                </div>
+
+                <!-- Email -->
+                <div class="info-section">
+                    <label class="info-label">Email</label>
+                    <p class="info-value">@Client?.Email</p>
+                </div>
+
+                <!-- Teléfono -->
+                <div class="info-section">
+                    <label class="info-label">Teléfono</label>
+                    <p class="info-value">@(Client?.Phone?.ToString() ?? "N/A")</p>
+                </div>
+
+                @if (Client?.Company is not null)
+                {
+                    <!-- Empresa -->
+                    <div class="info-section">
+                        <label class="info-label">Empresa</label>
+                        <p class="info-value">@Client?.Company</p>
+                    </div>
+                }
+
+                @if (Client?.Position is not null)
+                {
+                    <!-- Puesto -->
+                    <div class="info-section">
+                        <label class="info-label">Puesto</label>
+                        <p class="info-value">@Client?.Position</p>
+                    </div>
+                }
+
+
+                <!-- ID -->
+                <div class="info-section">
+                    <label class="info-label">ID del Cliente</label>
+                    <p class="info-value">@Client?.Id</p>
+                </div>
+            </div>
+
+            <!-- Notas si existen -->
+            @if (Client?.ClientNotes is not null && Client.ClientNotes.Count > 0)
+            {
+                <div class="client-notes-section">
+                    <h3 class="notes-title">Notas del Cliente</h3>
+                    <div class="notes-container">
+                        @foreach (var note in Client.ClientNotes)
+                        {
+                            <div class="note-item">
+                                <p class="note-text">@note.Content</p>
+                                <small class="note-date">ID: @note.Id</small>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
         </div>
 
+        <!-- Footer -->
+        <div class="modal-footer-details">
+            <BPButton class="border-0 bg-transparent text-danger fw-bold" OnClick="HandleOnClose">Exit</BPButton>
+        </div>
     </div>
-
 </div>
 
 @code {
-
     [Parameter, EditorRequired] public ClientDTO? Client { get; set; }
+
     [Parameter, EditorRequired] public EventCallback OnClose { get; set; }
 
-
-    public async Task HandleOnClose()
+    private async Task HandleOnClose()
     {
         await OnClose.InvokeAsync();
     }

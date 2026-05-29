@@ -22,7 +22,7 @@ else
                   OnSubmit="HandleRegister" />
 
         <!-- Link al login -->
-        <div style="text-align: center; margin-top: 20px;">
+        <div style="text-align: center; margin-top: 20px; margin-bottom: 20px;">
             <p style="color: #666; font-size: 14px; margin: 0;">
                 ¿Ya tienes cuenta?
                 <a href="/auth/login" style="color: #667eea; text-decoration: none; font-weight: 600; cursor: pointer;">Inicia sesión aquí</a>
@@ -46,7 +46,7 @@ else
 
             if (!string.IsNullOrEmpty(token))
             {
-                NavManager.NavigateTo("/dashboard");
+                NavManager.NavigateTo("/");
                 return;
             }
         }
@@ -71,7 +71,7 @@ else
             if (!string.IsNullOrEmpty(response!.Token))
             {
                 await LocalStorage.SetItemLocalStorageAsync("token", response.Token);
-                NavManager.NavigateTo("/dashboard");
+                NavManager.NavigateTo("/");
             }
             else
             {

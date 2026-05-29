@@ -17,7 +17,7 @@
 
             <!-- Botón Submit -->
             <div class="form-actions">
-                <BPButton Disabled="@CurrentPost">
+                <BPButton class="btn btn-success w-100" Disabled="@CurrentPost">
                     @if (CurrentPost)
                     {
                         <span class="btn-loading">Procesando...</span>
@@ -25,7 +25,7 @@
                     else
                     {
                         <span>@FormTitle</span>
-                    }
+                    }   
                 </BPButton>
             </div>
         </EditForm>

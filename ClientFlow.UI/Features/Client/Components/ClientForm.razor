@@ -1,6 +1,4 @@
-﻿@implements IDisposable
-
-<div class="container">
+﻿<div class="container">
 
     <div class="form-group">
         <EditForm EditContext="@editContext" OnValidSubmit="@HandleValidSubmit">
@@ -14,7 +12,7 @@
             <BPInputText Label="Empresa" Placeholder="Vodafone" @bind-Value="CreateClient.Company" />
             <BPInputText Label="Puesto" Placeholder="Desarrollador Backend" @bind-Value="CreateClient.Position" />
 
-            <BPButton Disabled="CurrentPost | invalidForm">
+            <BPButton class="btn btn-primary" Disabled="@CurrentPost">
                 @if (CurrentPost)
                 {
                     <span>Agregando...</span>
@@ -38,12 +36,10 @@
     [Parameter, EditorRequired] public EventCallback OnValidSubmit { get; set; }
 
     private EditContext? editContext;
-    private bool invalidForm = true;
 
     protected override void OnInitialized()
     {
         editContext = new(CreateClient);
-        editContext.OnFieldChanged += HandleFieldChanged;
     }
 
     private async Task HandleValidSubmit()
@@ -52,24 +48,6 @@
         {
 
             await OnValidSubmit.InvokeAsync();
-        }
-    }
-
-    private void HandleFieldChanged(object? sender, FieldChangedEventArgs e)
-    {
-        if (editContext is not null)
-        {
-            invalidForm = !editContext.Validate();
-            StateHasChanged();
-
-        }
-    }
-
-    public void Dispose()
-    {
-        if (editContext is not null)
-        {
-            editContext.OnFieldChanged -= HandleFieldChanged;
         }
     }
 }

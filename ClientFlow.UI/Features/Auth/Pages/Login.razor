@@ -19,6 +19,14 @@ else
               CurrentPost="isPosting"
               FormTitle="Iniciar Sesión"
               OnSubmit="HandleLogin" />
+
+    <!-- Link al register -->
+    <div style="text-align: center; margin-top: 20px; margin-bottom: 20px;">
+        <p style="color: #666; font-size: 14px; margin: 0;">
+            ¿No tienes cuenta?
+            <a href="/auth/register" style="color: #667eea; text-decoration: none; font-weight: 600; cursor: pointer;">Registrate aquí</a>
+        </p>
+    </div>
 }
 
 @code {
@@ -36,7 +44,7 @@ else
 
             if (!string.IsNullOrEmpty(token))
             {
-                NavManager.NavigateTo("/dashboard");
+                NavManager.NavigateTo("/");
                 return;
             }
         }
@@ -62,7 +70,7 @@ else
             if (!string.IsNullOrEmpty(response!.Token))
             {
                 await LocalStorage.SetItemLocalStorageAsync("token", response.Token);
-                NavManager.NavigateTo("/dashboard");
+                NavManager.NavigateTo("/");
             }
             else
             {

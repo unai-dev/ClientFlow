@@ -1,13 +1,11 @@
-@using ClientFlow.Shared.DTOs.Client
-
 <div class="client-list-container">
     <!-- Encabezado con título y botón crear -->
     <div class="client-list-header">
         <h2 class="client-list-title">Mis Clientes</h2>
-        <button class="btn-create-client" @onclick="OnCreateClick">
+        <BPButton class="btn btn-primary" OnClick="OnCreateClick">
             <span class="btn-icon">+</span>
             <span class="btn-text">Nuevo Cliente</span>
-        </button>
+        </BPButton>
     </div>
 
     <!-- Formulario de creación (modal/inline) -->
@@ -15,8 +13,9 @@
     {
         <div class="client-form-wrapper">
             <div class="client-form-header">
+
                 <h3>Agregar Nuevo Cliente</h3>
-                <button class="btn-close" @onclick="OnCloseFormClick">✕</button>
+                <BPButton class="btn-close" OnClick="OnCreateButtonClick">✕</BPButton>
             </div>
             <ClientForm CreateClient="NewClient"
                         CurrentPost="IsCreating"
@@ -66,67 +65,41 @@
 </div>
 
 @code {
-    [Parameter]
-    public List<ClientDTO> Clients { get; set; } = new();
+    [Parameter] public List<ClientDTO> Clients { get; set; } = new();
 
-    [Parameter]
-    public ClientDTO? SelectedClient { get; set; } = new();
+    [Parameter] public ClientDTO? SelectedClient { get; set; } = new();
 
-    [Parameter]
-    public CreateClientDTO NewClient { get; set; } = new();
+    [Parameter] public CreateClientDTO NewClient { get; set; } = new();
 
-    [Parameter, EditorRequired]
-    public int ClientIdToDelete { get; set; }
+    [Parameter, EditorRequired] public int ClientIdToDelete { get; set; }
 
-    [Parameter]
-    public bool ShowCreateForm { get; set; } = false;
+    [Parameter] public bool ShowCreateForm { get; set; } = false;
 
-    [Parameter]
-    public bool ShowClientDetails { get; set; } = false;
+    [Parameter] public bool ShowClientDetails { get; set; } = false;
 
-    [Parameter]
-    public bool ShowDeleteModal { get; set; } = false;
+    [Parameter] public bool ShowDeleteModal { get; set; } = false;
 
-    [Parameter]
-    public bool IsLoading { get; set; } = false;
+    [Parameter] public bool IsLoading { get; set; } = false;
 
-    [Parameter]
-    public bool IsCreating { get; set; } = false;
+    [Parameter] public bool IsCreating { get; set; } = false;
 
-    [Parameter]
-    public EventCallback OnCreateButtonClick { get; set; }
+    [Parameter] public EventCallback OnCreateButtonClick { get; set; }
 
-    [Parameter]
-    public EventCallback OnCloseForm { get; set; }
+    [Parameter] public EventCallback OnFormSubmitted { get; set; }
 
-    [Parameter]
-    public EventCallback OnFormSubmitted { get; set; }
+    [Parameter, EditorRequired] public EventCallback<ClientDTO> OnClientView { get; set; }
 
-    [Parameter, EditorRequired]
-    public EventCallback<ClientDTO> OnClientView { get; set; }
+    [Parameter, EditorRequired] public EventCallback OnCloseClientView { get; set; }
 
-    [Parameter, EditorRequired]
-    public EventCallback OnCloseClientView { get; set; }
+    [Parameter, EditorRequired] public EventCallback<int> OnClientDelete { get; set; }
 
-    [Parameter, EditorRequired]
-    public EventCallback<int> OnClientDelete { get; set; }
+    [Parameter, EditorRequired] public EventCallback<int> OnConfirmDelete { get; set; }
 
-    [Parameter, EditorRequired]
-    public EventCallback<int> OnConfirmDelete { get; set; }
-
-    [Parameter, EditorRequired]
-    public EventCallback OnClientCancel { get; set; }
-
-
+    [Parameter, EditorRequired] public EventCallback OnClientCancel { get; set; }
 
     private async Task OnCreateClick()
     {
         await OnCreateButtonClick.InvokeAsync();
-    }
-
-    private async Task OnCloseFormClick()
-    {
-        await OnCloseForm.InvokeAsync();
     }
 
     private async Task OnFormSubmit()
