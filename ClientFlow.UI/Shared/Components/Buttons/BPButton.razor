@@ -1,6 +1,8 @@
-﻿<button type="submit" class="@GetButtonClasses" disabled="@Disabled" @onclick="@(() => OnClick.InvokeAsync())">
-    @ChildContent
-</button>
+﻿<div class="mb-3">
+    <button type="submit" class="@GetButtonClasses" disabled="@Disabled" @onclick="@(() => OnClick.InvokeAsync())">
+        @ChildContent
+    </button>
+</div>
 
 @code {
 

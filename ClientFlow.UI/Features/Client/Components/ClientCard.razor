@@ -1,4 +1,5 @@
 @using ClientFlow.Shared.DTOs.Client
+@using ClientFlow.UI.Features.ClientNotes.Models
 
 <div class="client-card">
     <div class="client-card-content">
@@ -30,6 +31,7 @@
         <div class="client-actions">
             <BPButton class="btn btn-warning" OnClick="@(() => OnView.InvokeAsync())">Ver</BPButton>
             <BPButton class="btn btn-danger" OnClick="@(() => OnDelete.InvokeAsync(Client!.Id))">Eliminar</BPButton>
+            <BPButton class="btn btn-primary" OnClick="@(() => OnAddNote.InvokeAsync(Client!.Id))">Agregar Nota</BPButton>
         </div>
     </div>
 </div>
@@ -43,4 +45,7 @@
 
     [Parameter, EditorRequired]
     public EventCallback<int> OnDelete { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback<int> OnAddNote { get; set; }
 }

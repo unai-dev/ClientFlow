@@ -1,3 +1,4 @@
+@using ClientFlow.UI.Features.ClientNotes.Components
 <div class="client-list-container">
     <!-- Encabezado con título y botón crear -->
     <div class="client-list-header">
@@ -44,7 +45,8 @@
             {
                 <ClientCard Client="client"
                             OnView="@(() => OnClientView.InvokeAsync(client))"
-                            OnDelete="@((id) => OnClientDelete.InvokeAsync(id))" />
+                            OnDelete="@((id) => OnClientDelete.InvokeAsync(id))"
+                            OnAddNote="@((id) => OnAddNoteClick.InvokeAsync(id))" />
             }
         }
     </div>
@@ -52,15 +54,19 @@
     <!-- Modal de confirmación de eliminación -->
     @if (ShowDeleteModal)
     {
-        <ConfirmDelete 
-            ClientId="ClientIdToDelete"
-            OnDelete="OnConfirmDelete"
-            OnCancel="OnClientCancel" />
+        <ConfirmDelete ClientId="ClientIdToDelete"
+                       OnDelete="OnConfirmDelete"
+                       OnCancel="OnClientCancel" />
     }
 
     @if (ShowClientDetails)
     {
         <ClientDetails Client="SelectedClient" OnClose="OnCloseClientView" />
+    }
+
+    @if (ShowNoteForm)
+    {
+        <NoteForm CurrentPost="IsCreating" ClientNote="NewNote" OnAddNote="@(() => OnAddNote.InvokeAsync(NewNote))" OnClose="HandleCloseNoteForm" />
     }
 </div>
 
@@ -71,11 +77,15 @@
 
     [Parameter] public CreateClientDTO NewClient { get; set; } = new();
 
+    [Parameter] public CreateClientNoteDTO NewNote { get; set; } = new();
+
     [Parameter, EditorRequired] public int ClientIdToDelete { get; set; }
 
     [Parameter] public bool ShowCreateForm { get; set; } = false;
 
     [Parameter] public bool ShowClientDetails { get; set; } = false;
+
+    [Parameter] public bool ShowNoteForm { get; set; } = false;
 
     [Parameter] public bool ShowDeleteModal { get; set; } = false;
 
@@ -89,7 +99,13 @@
 
     [Parameter, EditorRequired] public EventCallback<ClientDTO> OnClientView { get; set; }
 
+    [Parameter, EditorRequired] public EventCallback<int> OnAddNoteClick { get; set; }
+
+    [Parameter, EditorRequired] public EventCallback<CreateClientNoteDTO> OnAddNote { get; set; }
+
     [Parameter, EditorRequired] public EventCallback OnCloseClientView { get; set; }
+
+    [Parameter, EditorRequired] public EventCallback OnCloseNoteForm { get; set; }
 
     [Parameter, EditorRequired] public EventCallback<int> OnClientDelete { get; set; }
 
@@ -105,5 +121,10 @@
     private async Task OnFormSubmit()
     {
         await OnFormSubmitted.InvokeAsync();
+    }
+
+    private async Task HandleCloseNoteForm()
+    {
+        await OnCloseNoteForm.InvokeAsync();
     }
 }

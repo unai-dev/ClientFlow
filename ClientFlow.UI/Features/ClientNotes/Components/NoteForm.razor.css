@@ -1,0 +1,421 @@
+﻿/* ============================================
+   NOTE FORM MODAL - ESTILOS VISUALES
+   ============================================ */
+
+/* Overlay oscuro */
+.modal-overlay-note {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    animation: fadeInOverlay 0.3s ease;
+    backdrop-filter: blur(4px);
+}
+
+@keyframes fadeInOverlay {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Modal principal */
+.modal-dialog-note {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    width: 90%;
+    max-width: 500px;
+    animation: slideUpNote 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideUpNote {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -48%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.modal-content-note {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header del modal */
+.modal-header-note {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 28px 28px 20px 28px;
+    border-bottom: 2px solid #f0f0f0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.modal-title-note {
+    margin: 0;
+    color: white;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+.btn-close-note {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    font-size: 28px;
+    color: white;
+    cursor: pointer;
+    padding: 8px 12px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.btn-close-note:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
+.btn-close-note:active {
+    transform: rotate(90deg) scale(0.95);
+}
+
+/* Body del modal */
+.modal-body-note {
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Etiqueta de formulario */
+.note-form-label {
+    display: block;
+    font-size: 12px;
+    color: #999;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 8px;
+}
+
+/* Textarea personalizado */
+.note-textarea-wrapper {
+    position: relative;
+}
+
+.note-textarea {
+    width: 100%;
+    min-height: 200px;
+    padding: 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 15px;
+    color: #333;
+    background: linear-gradient(135deg, #fafbff 0%, #f5f7ff 100%);
+    transition: all 0.3s ease;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.note-textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    background: white;
+}
+
+.note-textarea:hover:not(:focus) {
+    border-color: #667eea;
+    background: linear-gradient(135deg, #f5f7ff 0%, #eef1ff 100%);
+}
+
+.note-textarea::placeholder {
+    color: #bbb;
+}
+
+/* Contador de caracteres */
+.note-char-count {
+    font-size: 12px;
+    color: #999;
+    text-align: right;
+    margin-top: 6px;
+    font-weight: 500;
+}
+
+/* Footer del modal */
+.modal-footer-note {
+    display: flex;
+    gap: 12px;
+    padding: 20px 28px;
+    border-top: 2px solid #f0f0f0;
+    background: #fafafa;
+    justify-content: flex-end;
+}
+
+/* Botones */
+.btn-cancel-note,
+.btn-submit-note {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 13px;
+}
+
+.btn-cancel-note {
+    background: #f0f0f0;
+    color: #333;
+}
+
+.btn-cancel-note:hover {
+    background: #e0e0e0;
+    transform: translateY(-2px);
+}
+
+.btn-cancel-note:active {
+    transform: translateY(0);
+}
+
+.btn-submit-note {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-submit-note:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+.btn-submit-note:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.btn-submit-note:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Estados de carga */
+.btn-loading {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-loading::before {
+    content: '';
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Scrollbar personalizada */
+.note-textarea::-webkit-scrollbar {
+    width: 8px;
+}
+
+.note-textarea::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.note-textarea::-webkit-scrollbar-thumb {
+    background: #ddd;
+    border-radius: 4px;
+}
+
+.note-textarea::-webkit-scrollbar-thumb:hover {
+    background: #bbb;
+}
+
+/* Responsive - Tablet */
+@media (max-width: 768px) {
+    .modal-dialog-note {
+        width: 95%;
+        max-width: none;
+    }
+
+    .modal-header-note {
+        padding: 20px;
+    }
+
+    .modal-title-note {
+        font-size: 20px;
+    }
+
+    .modal-body-note {
+        padding: 20px;
+        gap: 16px;
+    }
+
+    .note-textarea {
+        min-height: 160px;
+        padding: 14px;
+        font-size: 14px;
+    }
+
+    .modal-footer-note {
+        padding: 16px 20px;
+    }
+
+    .btn-cancel-note,
+    .btn-submit-note {
+        padding: 10px 24px;
+        font-size: 12px;
+    }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 480px) {
+    .modal-dialog-note {
+        width: 98%;
+        max-width: none;
+    }
+
+    .modal-overlay-note {
+        background: rgba(0, 0, 0, 0.7);
+    }
+
+    .modal-header-note {
+        padding: 16px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .modal-title-note {
+        font-size: 18px;
+    }
+
+    .btn-close-note {
+        position: absolute;
+        right: 16px;
+        top: 16px;
+        width: 36px;
+        height: 36px;
+    }
+
+    .modal-body-note {
+        padding: 16px;
+        gap: 12px;
+    }
+
+    .note-textarea {
+        min-height: 140px;
+        padding: 12px;
+        font-size: 13px;
+    }
+
+    .note-form-label {
+        font-size: 10px;
+        margin-bottom: 6px;
+    }
+
+    .note-char-count {
+        font-size: 11px;
+    }
+
+    .modal-footer-note {
+        padding: 12px 16px;
+        gap: 8px;
+        flex-direction: column-reverse;
+    }
+
+    .btn-cancel-note,
+    .btn-submit-note {
+        width: 100%;
+        padding: 12px 16px;
+        font-size: 11px;
+    }
+}
+
+/* Dark mode support (opcional) */
+@media (prefers-color-scheme: dark) {
+    .modal-content-note {
+        background: #1e1e1e;
+    }
+
+    .modal-header-note {
+        border-bottom-color: #333;
+    }
+
+    .modal-body-note {
+        border-top-color: #333;
+    }
+
+    .note-textarea {
+        background: linear-gradient(135deg, #2d2d2d 0%, #333333 100%);
+        color: #e0e0e0;
+        border-color: #444;
+    }
+
+    .note-textarea:focus {
+        background: #262626;
+        border-color: #667eea;
+    }
+
+    .note-textarea:hover:not(:focus) {
+        background: linear-gradient(135deg, #333333 0%, #3d3d3d 100%);
+        border-color: #667eea;
+    }
+
+    .note-textarea::placeholder {
+        color: #888;
+    }
+
+    .note-char-count {
+        color: #888;
+    }
+
+    .modal-footer-note {
+        border-top-color: #333;
+        background: #262626;
+    }
+
+    .btn-cancel-note {
+        background: #2d2d2d;
+        color: #e0e0e0;
+    }
+
+    .btn-cancel-note:hover {
+        background: #333333;
+    }
+}

@@ -2,6 +2,7 @@
 @inject IClientService ClientService
 @inject NavigationManager NavManager
 @inject ILocalStorageService LocalStorage
+@inject IClientNotesService ClientNotesService
 
 <div class="dashboard-container">
     @if (isAuthenticated)
@@ -22,14 +23,18 @@
                     ClientIdToDelete="clientIdToDelete"
                     ShowClientDetails="showClientDetailsModal"
                     SelectedClient="selectedClient"
-
-                    OnCreateButtonClick="HandleClickCreateForm" 
+                    NewNote="newNote"
+                    ShowNoteForm="showNoteForm"
+                    OnCreateButtonClick="HandleClickCreateForm"
                     OnFormSubmitted="HandleCreateClient"
                     OnClientView="HandleViewClient"
                     OnClientDelete="HandleOpenDeleteModal"
                     OnConfirmDelete="HandleConfirmDelete"
                     OnClientCancel="HandleCancelDelete"
-                    OnCloseClientView="HandleCloseClientDetails" />
+                    OnCloseClientView="HandleCloseClientDetails"
+                    OnAddNoteClick="HandleAddNoteClick"
+                    OnAddNote="HandleAddNote"
+                    OnCloseNoteForm="HandleCloseAddNoteForm" />
     }
     else
     {
@@ -47,6 +52,7 @@
     private List<ClientDTO?> clients = new();
     private CreateClientDTO newClient = new();
     private ClientDTO selectedClient = new();
+    private CreateClientNoteDTO newNote = new();
 
     private bool isAuthenticated = false;
     private bool showCreateForm = false;
@@ -54,6 +60,7 @@
     private bool isCreating = false;
     private bool showDeleteModal = false;
     private bool showClientDetailsModal = false;
+    private bool showNoteForm = false;
 
     private int clientIdToDelete = 0;
 
@@ -123,6 +130,30 @@
         }
     }
 
+    private async Task HandleAddNote()
+    {
+        isCreating = true;
+
+        try
+        {
+            var result = await ClientNotesService.CreateClientNoteAsync(newNote.ClientId, newNote);
+
+            if (result is not null)
+            {
+                HandleCloseAddNoteForm();
+                NavManager.NavigateTo("/");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al crear una nota {ex.Message}");
+        }
+        finally
+        {
+            isCreating = false;
+        }
+    }
+
     private async Task HandleViewClient(ClientDTO client)
     {
         try
@@ -156,6 +187,14 @@
         }
     }
 
+    private void HandleAddNoteClick(int clientId)
+    {
+        newNote = new CreateClientNoteDTO { ClientId = clientId };
+        Console.WriteLine($"Agregando nota a cliente con id: {newNote.ClientId}");
+
+        showNoteForm = true;
+    }
+
     private void HandleClickCreateForm()
     {
         showCreateForm = !showCreateForm;
@@ -178,5 +217,11 @@
     {
         selectedClient = new();
         showClientDetailsModal = false;
+    }
+
+    private void HandleCloseAddNoteForm()
+    {
+        newNote = new();
+        showNoteForm = false;
     }
 }

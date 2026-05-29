@@ -15,19 +15,19 @@ namespace ClientFlow.UI.Features.ClientNotes.Services
 
         public async Task<List<ClientNoteDTO?>> GetClientNotesAsync(int clientId)
         {
-            return await httpClient.GetFromJsonAsync<List<ClientNoteDTO?>>($"clients/{clientId}/notes");
+            return await httpClient.GetFromJsonAsync<List<ClientNoteDTO?>>($"{clientId}/notes");
         }
 
         public async Task<ClientNoteDTO?> CreateClientNoteAsync(int clientId, CreateClientNoteDTO noteDTO)
         {
-            var response = await httpClient.PostAsJsonAsync($"clients/{clientId}/notes", noteDTO);
+            var response = await httpClient.PostAsJsonAsync($"{clientId}/notes", noteDTO);
             return await response.Content.ReadFromJsonAsync<ClientNoteDTO>();
         }
 
 
         public async Task<bool?> DeleteClientNoteAsync(int clientId, int id)
         {
-            var response = await httpClient.DeleteAsync($"clients/{clientId}/notes/{id}");
+            var response = await httpClient.DeleteAsync($"{clientId}/notes/{id}");
             return response.IsSuccessStatusCode;
         }
     }

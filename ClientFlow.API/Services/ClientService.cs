@@ -27,7 +27,7 @@ namespace ClientFlow.API.Services
 
         public async Task<ClientDTO> GetClientAsync(int id)
         {
-            var client = await context.Clients.FirstOrDefaultAsync(x => x.Id == id);
+            var client = await context.Clients.Include(x => x.ClientNotes).FirstOrDefaultAsync(x => x.Id == id);
 
             return mapper.Map<ClientDTO>(client);
         }

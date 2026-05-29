@@ -1,0 +1,77 @@
+﻿<!-- Overlay oscuro -->
+<div class="modal-overlay-note" @onclick="HandleOnClose"></div>
+
+<!-- Modal del formulario de nota -->
+<div class="modal-dialog-note">
+    <div class="modal-content-note">
+        <!-- Header -->
+        <div class="modal-header-note">
+            <h2 class="modal-title-note">Agregar Nota</h2>
+            <BPButton class="border-0 bg-transparent" OnClick="HandleOnClose">❌</BPButton>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body-note">
+            <EditForm EditContext="editContext" OnValidSubmit="HandleValidSubmit">
+                <DataAnnotationsValidator />
+
+                <div class="note-textarea-wrapper">
+                    <label class="note-form-label">Contenido de la Nota</label>
+                    <textarea class="note-textarea"
+                              placeholder="Escribe aquí tu nota..."
+                              @bind="ClientNote.Content"
+                              maxlength="1000"></textarea>
+                    <div class="note-char-count">
+                        @(ClientNote.Content?.Length ?? 0) / 1000
+                    </div>
+                </div>
+            </EditForm>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer-note">
+            <BPButton class="btn btn-danger" OnClick="HandleOnClose">Cancelar</BPButton>
+            <BPButton class="btn btn-primary"
+                    Disabled="@CurrentPost"
+                    OnClick="HandleValidSubmit">
+                @if (CurrentPost)
+                {
+                    <span class="btn-loading">Agregando...</span>
+                }
+                else
+                {
+                    <span>Agregar Nota</span>
+                }
+            </BPButton>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    [Parameter, EditorRequired] public CreateClientNoteDTO ClientNote { get; set; }
+    [Parameter, EditorRequired] public bool CurrentPost { get; set; } = false;
+    [Parameter, EditorRequired] public EventCallback<CreateClientNoteDTO?> OnAddNote { get; set; }
+    [Parameter, EditorRequired] public EventCallback OnClose { get; set; }
+
+    private EditContext? editContext;
+
+
+    protected override void OnInitialized()
+    {
+        editContext = new(ClientNote);
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (editContext is not null && editContext.Validate())
+        {
+            await OnAddNote.InvokeAsync();
+        }
+    }
+
+    private async Task HandleOnClose()
+    {
+        await OnClose.InvokeAsync();
+    }
+}
