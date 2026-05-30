@@ -15,7 +15,6 @@
 
         <!-- Componente de lista de clientes -->
         <ClientList Clients="clients"
-                    NewClient="newClient"
                     ShowCreateForm="showCreateForm"
                     IsLoading="isLoading"
                     IsCreating="isCreating"
@@ -25,8 +24,7 @@
                     SelectedClient="selectedClient"
                     NewNote="newNote"
                     ShowNoteForm="showNoteForm"
-                    OnCreateButtonClick="HandleClickCreateForm"
-                    OnFormSubmitted="HandleCreateClient"
+
                     OnClientView="HandleViewClient"
                     OnClientDelete="HandleOpenDeleteModal"
                     OnConfirmDelete="HandleConfirmDelete"
@@ -50,7 +48,6 @@
 
 @code {
     private List<ClientDTO?> clients = new();
-    private CreateClientDTO newClient = new();
     private ClientDTO selectedClient = new();
     private CreateClientNoteDTO newNote = new();
 
@@ -104,31 +101,6 @@
         }
     }
 
-
-
-    private async Task HandleCreateClient()
-    {
-        isCreating = true;
-
-        try
-        {
-            var result = await ClientService.CreateClientAsync(newClient);
-
-            if (result is not null)
-            {
-                HandleClickCreateForm();
-                await LoadClients();
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error creando cliente: {ex.Message}");
-        }
-        finally
-        {
-            isCreating = false;
-        }
-    }
 
     private async Task HandleAddNote()
     {
@@ -194,13 +166,7 @@
 
         showNoteForm = true;
     }
-
-    private void HandleClickCreateForm()
-    {
-        showCreateForm = !showCreateForm;
-        newClient = new CreateClientDTO();
-    }
-
+    
     private void HandleOpenDeleteModal(int clientId)
     {
         clientIdToDelete = clientId;

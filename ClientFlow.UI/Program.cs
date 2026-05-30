@@ -13,6 +13,8 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
+builder.Services.AddAuthorizationCore();
+
 builder.Services.AddTransient<ILocalStorageService, LocalStorageService>();
 builder.Services.AddScoped<AuthHeaderHandler>();
 
@@ -30,5 +32,6 @@ builder.Services.AddScoped(sp =>
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IClientNotesService, ClientNotesService>();
+
 
 await builder.Build().RunAsync();

@@ -1,7 +1,5 @@
-@using ClientFlow.Shared.DTOs.Client
-@using ClientFlow.UI.Features.ClientNotes.Models
 
-<div class="client-card">
+<div class="client-card" style="cursor:pointer;" @onclick="@(() => OnView.InvokeAsync())">
     <div class="client-card-content">
         <!-- Fila de datos -->
         <div class="client-row">

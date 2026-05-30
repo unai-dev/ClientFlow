@@ -3,26 +3,11 @@
     <!-- Encabezado con título y botón crear -->
     <div class="client-list-header">
         <h2 class="client-list-title">Mis Clientes</h2>
-        <BPButton class="btn btn-primary" OnClick="OnCreateClick">
+        <a class="btn btn-primary" href="/client/add">
             <span class="btn-icon">+</span>
             <span class="btn-text">Nuevo Cliente</span>
-        </BPButton>
+        </a>
     </div>
-
-    <!-- Formulario de creación (modal/inline) -->
-    @if (ShowCreateForm)
-    {
-        <div class="client-form-wrapper">
-            <div class="client-form-header">
-
-                <h3>Agregar Nuevo Cliente</h3>
-                <BPButton class="btn-close" OnClick="OnCreateButtonClick">✕</BPButton>
-            </div>
-            <ClientForm CreateClient="NewClient"
-                        CurrentPost="IsCreating"
-                        OnValidSubmit="OnFormSubmit" />
-        </div>
-    }
 
     <!-- Lista de clientes -->
     <div class="client-list">
@@ -54,7 +39,7 @@
     <!-- Modal de confirmación de eliminación -->
     @if (ShowDeleteModal)
     {
-        <ConfirmDelete ClientId="ClientIdToDelete"
+        <ClientDelete ClientId="ClientIdToDelete"
                        OnDelete="OnConfirmDelete"
                        OnCancel="OnClientCancel" />
     }
@@ -68,6 +53,7 @@
     {
         <NoteForm CurrentPost="IsCreating" ClientNote="NewNote" OnAddNote="@(() => OnAddNote.InvokeAsync(NewNote))" OnClose="HandleCloseNoteForm" />
     }
+
 </div>
 
 @code {
@@ -75,7 +61,6 @@
 
     [Parameter] public ClientDTO? SelectedClient { get; set; } = new();
 
-    [Parameter] public CreateClientDTO NewClient { get; set; } = new();
 
     [Parameter] public CreateClientNoteDTO NewNote { get; set; } = new();
 
@@ -93,10 +78,6 @@
 
     [Parameter] public bool IsCreating { get; set; } = false;
 
-    [Parameter] public EventCallback OnCreateButtonClick { get; set; }
-
-    [Parameter] public EventCallback OnFormSubmitted { get; set; }
-
     [Parameter, EditorRequired] public EventCallback<ClientDTO> OnClientView { get; set; }
 
     [Parameter, EditorRequired] public EventCallback<int> OnAddNoteClick { get; set; }
@@ -113,15 +94,7 @@
 
     [Parameter, EditorRequired] public EventCallback OnClientCancel { get; set; }
 
-    private async Task OnCreateClick()
-    {
-        await OnCreateButtonClick.InvokeAsync();
-    }
 
-    private async Task OnFormSubmit()
-    {
-        await OnFormSubmitted.InvokeAsync();
-    }
 
     private async Task HandleCloseNoteForm()
     {

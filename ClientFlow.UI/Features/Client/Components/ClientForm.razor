@@ -1,29 +1,27 @@
-﻿<div class="container">
+﻿
+<div class="rounded-4 shadow-lg p-4 align-content-center w-100 h-100 mt-5 ">
+    <EditForm EditContext="@editContext" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
 
-    <div class="form-group">
-        <EditForm EditContext="@editContext" OnValidSubmit="@HandleValidSubmit">
-            <DataAnnotationsValidator />
+        <BPInputText Label="Nombre*" Placeholder="Unai Villar Lopez" @bind-Value="CreateClient.FullName" />
+        <BPInputText Label="Email" Placeholder="unaivl123@gmail.com" @bind-Value="CreateClient.Email" />
 
-            <BPInputText Label="Nombre*" Placeholder="Unai Villar Lopez" @bind-Value="CreateClient.FullName" />
-            <BPInputText Label="Email" Placeholder="unaivl123@gmail.com" @bind-Value="CreateClient.Email" />
+        <BPInputNumber Label="Telefono" Placeholder="123456789" @bind-Value="CreateClient.Phone" />
 
-            <BPInputNumber Label="Telefono" Placeholder="123456789" @bind-Value="CreateClient.Phone" />
+        <BPInputText Label="Empresa" Placeholder="Vodafone" @bind-Value="CreateClient.Company" />
+        <BPInputText Label="Puesto" Placeholder="Desarrollador Backend" @bind-Value="CreateClient.Position" />
 
-            <BPInputText Label="Empresa" Placeholder="Vodafone" @bind-Value="CreateClient.Company" />
-            <BPInputText Label="Puesto" Placeholder="Desarrollador Backend" @bind-Value="CreateClient.Position" />
-
-            <BPButton class="btn btn-primary" Disabled="@CurrentPost">
-                @if (CurrentPost)
-                {
-                    <span>Agregando...</span>
-                }
-                else
-                {
-                    <span>Agregar Cliente</span>
-                }
-            </BPButton>
-        </EditForm>
-    </div>
+        <BPButton class="btn btn-primary w-100 mt-3" Disabled="@CurrentPost">
+            @if (CurrentPost)
+            {
+                <span>Agregando...</span>
+            }
+            else
+            {
+                <span>Agregar Cliente</span>
+            }
+        </BPButton>
+    </EditForm>
 </div>
 
 

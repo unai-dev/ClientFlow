@@ -1,0 +1,48 @@
+﻿@page "/client/add"
+@inject NavigationManager NavManager
+@inject IClientService ClientService
+@attribute [Authorize]
+
+
+<div class="client-form-wrapper">
+    <div>
+
+        <h3 class="fw-bold mt-3">Agregar Nuevo Cliente</h3>
+        <p class="text-muted">Agrega un nuevo cliente a la lista</p>
+        <hr/>
+    </div>
+    <ClientForm CreateClient="newClient"
+                CurrentPost="isCreating"
+                OnValidSubmit="HandleCreateClient" />
+</div>
+
+
+
+@code {
+    private CreateClientDTO newClient { get; set; } = new();
+    private bool isCreating { get; set; } = false;
+
+    private async Task HandleCreateClient()
+    {
+        isCreating = true;
+
+        try
+        {
+            var result = await ClientService.CreateClientAsync(newClient);
+
+            if (result is not null)
+            {
+                NavManager.NavigateTo("/");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error creando cliente: {ex.Message}");
+        }
+        finally
+        {
+            isCreating = false;
+        }
+    }
+
+}
