@@ -24,7 +24,7 @@
                     SelectedClient="selectedClient"
                     NewNote="newNote"
                     ShowNoteForm="showNoteForm"
-
+                    
                     OnClientView="HandleViewClient"
                     OnClientDelete="HandleOpenDeleteModal"
                     OnConfirmDelete="HandleConfirmDelete"
@@ -32,7 +32,9 @@
                     OnCloseClientView="HandleCloseClientDetails"
                     OnAddNoteClick="HandleAddNoteClick"
                     OnAddNote="HandleAddNote"
-                    OnCloseNoteForm="HandleCloseAddNoteForm" />
+                    OnCloseNoteForm="HandleCloseAddNoteForm" 
+                    OnDeleteNote="HandleDeleteNote"
+                    />
     }
     else
     {
@@ -156,6 +158,24 @@
         catch (Exception ex)
         {
             Console.WriteLine($"Error eliminando cliente: {ex.Message}");
+        }
+    }
+
+    private async Task HandleDeleteNote(Guid noteId)
+    {
+        try
+        {
+            var result = await ClientNotesService.DeleteClientNoteAsync(noteId);
+
+            if (result is not null)
+            {
+                HandleCloseClientDetails();
+                NavManager.NavigateTo("/");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error eliminando nota: {ex.Message}");
         }
     }
 

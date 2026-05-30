@@ -1,0 +1,13 @@
+﻿<div class="client-notes-section">
+    <h3 class="text-white fw-bold fs-6 mb-3 mx-2">Notas del Cliente</h3>
+    <div class="notes-container">
+        @foreach (var note in ClientNotes)
+        {
+            <ClientNoteItem ClientNote="note" OnDelete="@(() => OnDeleteNote.InvokeAsync(note.Id))"/>
+        }
+    </div>
+</div>
+@code {
+    [Parameter, EditorRequired] public List<ClientNoteDTO> ClientNotes { get; set; }
+    [Parameter, EditorRequired] public EventCallback<Guid> OnDeleteNote { get; set; }
+}

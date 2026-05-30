@@ -1,0 +1,12 @@
+﻿<div class="note-item">
+    <div class="d-flex flex-row justify-content-between">
+        <p class="note-text">@ClientNote.Content</p>
+        <BPButton class="bg-transparent border-0" OnClick="@(() => OnDelete.InvokeAsync(ClientNote.Id))">🗑️</BPButton>
+
+    </div>
+    <small class="note-date">ID: @ClientNote.Id</small>
+</div>
+@code {
+    [Parameter, EditorRequired] public ClientNoteDTO ClientNote { get; set; }
+    [Parameter, EditorRequired] public EventCallback<Guid> OnDelete { get; set; }
+}

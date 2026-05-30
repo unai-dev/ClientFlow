@@ -1,0 +1,23 @@
+﻿
+/* Sección de notas */
+.client-notes-section {
+    margin-top: 32px;
+    padding-top: 28px;
+    border-top: 2px solid #f0f0f0;
+}
+
+.notes-title {
+    margin: 0 0 16px 0;
+    color: #333;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.notes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 8px;
+}

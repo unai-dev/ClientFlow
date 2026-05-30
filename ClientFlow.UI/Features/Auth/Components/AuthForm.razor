@@ -1,6 +1,6 @@
 ﻿
 <div class="auth-container">
-    <div class="auth-card">
+    <div class="auth-card border-5 shadow-lg border-0">
         <!-- Título del formulario -->
         <h2 class="auth-title">@FormTitle</h2>
 
@@ -12,7 +12,7 @@
             <div class="form-inputs">
                 <BPInputText Label="Email" Placeholder="Introduce un email" @bind-Value="@Credentials.Email" />
 
-                <BPInputText Label="Password" Placeholder="Introduce un password" @bind-Value="@Credentials.Password" />
+                <BPInputText Label="Password" Type="password" Placeholder="Introduce un password" @bind-Value="@Credentials.Password" />
             </div>
 
             <!-- Botón Submit -->

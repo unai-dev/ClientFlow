@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ClientFlow.API.Controllers
 {
     [ApiController]
-    [Route("v1/api/{clientId}/notes")]
+    [Route("v1/api/notes/")]
     [Authorize]
     public class ClientNoteController : ControllerBase
     {
@@ -25,7 +25,7 @@ namespace ClientFlow.API.Controllers
             return result is not null ? Ok(result) : NotFound("Client not found");
         }
 
-        [HttpPost]
+        [HttpPost("{clientId}")]
         public async Task<ActionResult<ClientNoteDTO>> Post([FromBody] CreateClientNoteDTO createClientNoteDTO, [FromRoute] int clientId)
         {
             var result = await clientNoteService.CreateClientNoteAsync(clientId, createClientNoteDTO);
@@ -34,9 +34,9 @@ namespace ClientFlow.API.Controllers
         }
 
         [HttpDelete("{id:guid}")]
-        public async Task<IActionResult> Delte([FromRoute] int clientId, [FromRoute] Guid id)
+        public async Task<IActionResult> Delte([FromRoute] Guid id)
         {
-            var result = await clientNoteService.DeleteClientNoteAsync(clientId, id);
+            var result = await clientNoteService.DeleteClientNoteAsync(id);
 
             return result ? NoContent() : NotFound();
         }

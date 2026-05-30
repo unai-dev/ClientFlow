@@ -45,14 +45,8 @@ namespace ClientFlow.API.Services
             return mapper.Map<ClientNoteDTO>(note);
         }
 
-        public async Task<bool> DeleteClientNoteAsync(int clientId, Guid id)
+        public async Task<bool> DeleteClientNoteAsync(Guid id)
         {
-            var client = await context.Clients.AnyAsync(x => x.Id == clientId);
-
-            if (!client)
-            {
-                return false;
-            }
 
             var result = await context.ClientNotes.Where(x => x.Id == id).ExecuteDeleteAsync();
 

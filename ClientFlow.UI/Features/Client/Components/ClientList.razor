@@ -46,7 +46,7 @@
 
     @if (ShowClientDetails)
     {
-        <ClientDetails Client="SelectedClient" OnClose="OnCloseClientView" />
+        <ClientDetails Client="SelectedClient" OnClose="OnCloseClientView" OnDeleteNote="@((id) => OnDeleteNote.InvokeAsync(id))" />
     }
 
     @if (ShowNoteForm)
@@ -93,6 +93,8 @@
     [Parameter, EditorRequired] public EventCallback<int> OnConfirmDelete { get; set; }
 
     [Parameter, EditorRequired] public EventCallback OnClientCancel { get; set; }
+
+    [Parameter, EditorRequired] public EventCallback<Guid> OnDeleteNote { get; set; }
 
 
 

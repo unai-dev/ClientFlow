@@ -1,6 +1,4 @@
 ﻿@inherits LayoutComponentBase
-@inject NavigationManager NavigationManager
-@inject ILocalStorageService LocalStorageService
 
 <div class="page">
     <div class="sidebar">
@@ -8,25 +6,8 @@
     </div>
 
     <main>
-        <div class="top-row px-4">
-            <a class="text-decoration-none" style="cursor:pointer;" @onclick="Logout">Cerrar Sesion</a>
-        </div>
-
         <article class="content px-4">
             @Body
         </article>
     </main>
 </div>
-
-@code {
-
-
-    private async Task Logout()
-    {
-
-        await LocalStorageService.RemoveItemLocalStorage("token");
-        NavigationManager.NavigateTo("/auth/login");
-    }
-
-
-}

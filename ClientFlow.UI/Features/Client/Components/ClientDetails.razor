@@ -1,4 +1,5 @@
-﻿<!-- Overlay oscuro -->
+﻿@using ClientFlow.UI.Features.ClientNotes.Components
+<!-- Overlay oscuro -->
 <div class="modal-overlay-details" @onclick="HandleOnClose"></div>
 
 <!-- Modal de detalles -->
@@ -61,18 +62,7 @@
             <!-- Notas si existen -->
             @if (Client?.ClientNotes is not null && Client.ClientNotes.Count > 0)
             {
-                <div class="client-notes-section">
-                    <h3 class="notes-title">Notas del Cliente</h3>
-                    <div class="notes-container">
-                        @foreach (var note in Client.ClientNotes)
-                        {
-                            <div class="note-item">
-                                <p class="note-text">@note.Content</p>
-                                <small class="note-date">ID: @note.Id</small>
-                            </div>
-                        }
-                    </div>
-                </div>
+                <ClientNotesList ClientNotes="Client.ClientNotes" OnDeleteNote="HandleDeleteNote"/>
             }
         </div>
 
@@ -88,8 +78,15 @@
 
     [Parameter, EditorRequired] public EventCallback OnClose { get; set; }
 
+    [Parameter, EditorRequired] public EventCallback<Guid> OnDeleteNote { get; set; }
+
     private async Task HandleOnClose()
     {
         await OnClose.InvokeAsync();
+    }
+
+    private async Task HandleDeleteNote(Guid id)
+    {
+        await OnDeleteNote.InvokeAsync(id);
     }
 }

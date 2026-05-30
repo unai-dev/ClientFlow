@@ -5,7 +5,7 @@ namespace ClientFlow.UI.Features.ClientNotes.Interfaces
     public interface IClientNotesService
     {
         Task<ClientNoteDTO?> CreateClientNoteAsync(int clientId, CreateClientNoteDTO noteDTO);
-        Task<bool?> DeleteClientNoteAsync(int clientId, int id);
+        Task<bool?> DeleteClientNoteAsync(Guid id);
         Task<List<ClientNoteDTO?>> GetClientNotesAsync(int clientId);
     }
 }
