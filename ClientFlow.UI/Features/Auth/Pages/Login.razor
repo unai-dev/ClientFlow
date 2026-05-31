@@ -2,6 +2,7 @@
 @inject NavigationManager NavManager
 @inject IAuthService AuthService
 @inject ILocalStorageService LocalStorage
+@inject IJSCustomEvents JS
 
 <!-- Verificar autenticación al cargar -->
 @if (isLoading)
@@ -69,6 +70,7 @@ else
 
             if (!string.IsNullOrEmpty(response!.Token))
             {
+                await JS.CustomAlert("¡Bienvenido de nuevo!");
                 await LocalStorage.SetItemLocalStorageAsync("token", response.Token);
                 NavManager.NavigateTo("/");
             }
@@ -81,6 +83,8 @@ else
         }
         catch (Exception ex)
         {
+            await JS.CustomAlert("Credenciales incorrectas. Por favor, intenta de nuevo.");
+
             Console.WriteLine($"Error en login: {ex.Message}");
         }
         finally
