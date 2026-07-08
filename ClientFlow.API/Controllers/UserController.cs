@@ -18,10 +18,10 @@ public class UserController: ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<UserDTO>> Get() =>
-        await userService.GetUsersAsync();
+    public async Task<ActionResult<IEnumerable<UserDTO>>> Get() =>
+        Ok(await userService.GetUsersAsync());
 
     [HttpGet("{id}")]
-    public async Task<UserDTO> Get([FromRoute] int id) =>
-        await userService.GetUserAsync(id);
+    public async Task<ActionResult<UserDTO>> Get([FromRoute] int id) =>
+        Ok(await userService.GetUserAsync(id));
 }

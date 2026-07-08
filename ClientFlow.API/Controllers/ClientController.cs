@@ -18,20 +18,12 @@ public class ClientController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ClientDTO>>> Get()
-    {
-        var result = await clientService.GetClientsAsync();
-
-        return Ok(result);
-    }
+    public async Task<ActionResult<IEnumerable<ClientDTO>>> Get() =>
+        Ok(await clientService.GetClientsAsync());
 
     [HttpGet("{id:int}", Name = "GetClient")]
-    public async Task<ActionResult<ClientDTO>> Get([FromRoute] int id)
-    {
-        var result = await clientService.GetClientAsync(id);
-
-        return result is not null ? Ok(result) : NotFound($"Client with id {id} not found");
-    }
+    public async Task<ActionResult<ClientDTO>> Get([FromRoute] int id) =>
+        Ok(await clientService.GetClientAsync(id));
 
     [HttpPost]
     public async Task<ActionResult<ClientDTO>> Post([FromBody] CreateClientDTO createClientDTO)

@@ -40,7 +40,5 @@ public class UserService : IUserService
         return result > 0;
     }
 
-
-
 }
 

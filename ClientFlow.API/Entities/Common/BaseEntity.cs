@@ -1,6 +1,6 @@
 ﻿namespace ClientFlow.API.Entities.Common;
 
-public class BaseEntity
+public abstract class BaseEntity
 {
     public int Id { get; set; }
     public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
