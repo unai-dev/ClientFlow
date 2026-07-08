@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace ClientFlow.Shared.DTOs.Auth
+namespace ClientFlow.Shared.DTOs.Auth;
+
+public class CredentialsDTO
 {
-    public class CredentialsDTO
-    {
-        [Required, EmailAddress]
-        public string? Email { get; set; }
+    [Required, MaxLength(50)]
+    public string? NickName { get; set; }
 
-        [Required]
-        public string? Password { get; set; }
-    }
+    [Required, EmailAddress]
+    public string? Email { get; set; }
+
+    [Required]
+    public string? Password { get; set; }
 }

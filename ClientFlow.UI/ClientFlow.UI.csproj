@@ -19,4 +19,8 @@
 	  <ProjectReference Include="..\ClientFlow.Shared\ClientFlow.Shared.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="wwwroot\assets\img\" />
+	</ItemGroup>
+
 </Project>

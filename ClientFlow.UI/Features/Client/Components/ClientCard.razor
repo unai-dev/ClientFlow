@@ -5,7 +5,7 @@
         <div class="client-row">
             <div class="client-column">
                 <span class="client-label">Nombre</span>
-                <span class="client-value">@Client?.FullName</span>
+                <span class="client-value">@Client?.Name!.Concat(Client.SurName!)</span>
             </div>
             <div class="client-column">
                 <span class="client-label">Email</span>

@@ -1,15 +1,28 @@
-﻿namespace ClientFlow.API.Entities
+﻿using ClientFlow.API.Entities.Common;
+using System.ComponentModel.DataAnnotations;
+
+namespace ClientFlow.API.Entities;
+
+public class Client: BaseEntity
 {
-    public class Client
-    {
-        public int Id { get; set; }
-        public string? FullName { get; set; }
-        public string? Email { get; set; }
-        public long Phone { get; set; }
+    [Required, MaxLength(55)]
+    public string? Name { get; set; }
+    [Required, MaxLength(55)]
+    public string? SurName { get; set; }
+    [MaxLength(55)]
+    public string? SurName2 { get; set; }
 
-        public string? Company { get; set; }
-        public string? Position { get; set; }
+    [Required, EmailAddress]
+    public string? Email { get; set; }
+    [Required]
+    public int Phone { get; set; }
 
-        public List<ClientNote> ClientNotes { get; set; } = new List<ClientNote>();
-    }
+    // company properties
+    [Required, MaxLength(255)]
+    public string? Company { get; set; }
+    [Required, MaxLength(255)]
+    public string? Position { get; set; }
+
+    // related properties
+    public List<ClientNote> ClientNotes { get; set; } = new List<ClientNote>();
 }

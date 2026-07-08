@@ -3,10 +3,12 @@
     <EditForm EditContext="@editContext" OnValidSubmit="@HandleValidSubmit">
         <DataAnnotationsValidator />
 
-        <BPInputText Label="Nombre*" Placeholder="Unai Villar Lopez" @bind-Value="CreateClient.FullName" />
+        <BPInputText Label="Nombre" Placeholder="Unai" @bind-Value="CreateClient.Name" />
+        <BPInputText Label="Apellido" Placeholder="Villar" @bind-Value="CreateClient.SurName" />
+        <BPInputText Label="Segundo Apellido*" Placeholder="Lopez" @bind-Value="CreateClient.SurName2" />
         <BPInputText Label="Email" Placeholder="unaivl123@gmail.com" @bind-Value="CreateClient.Email" />
 
-        <BPInputNumber Label="Telefono" Placeholder="123456789" @bind-Value="CreateClient.Phone" />
+        @* <BPInputNumber Label="Telefono" Placeholder="123456789" @bind-Value="CreateClient.Phone"/> *@
 
         <BPInputText Label="Empresa" Placeholder="Vodafone" @bind-Value="CreateClient.Company" />
         <BPInputText Label="Puesto" Placeholder="Desarrollador Backend" @bind-Value="CreateClient.Position" />

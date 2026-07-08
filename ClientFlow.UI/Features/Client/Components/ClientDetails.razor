@@ -18,7 +18,7 @@
                 <!-- Nombre Completo -->
                 <div class="info-section">
                     <label class="info-label">Nombre Completo</label>
-                    <p class="info-value">@Client?.FullName</p>
+                    <p class="info-value">@Client?.Name!.Concat(Client.SurName!)</p>
                 </div>
 
                 <!-- Email -->
@@ -78,14 +78,14 @@
 
     [Parameter, EditorRequired] public EventCallback OnClose { get; set; }
 
-    [Parameter, EditorRequired] public EventCallback<Guid> OnDeleteNote { get; set; }
+    [Parameter, EditorRequired] public EventCallback<int> OnDeleteNote { get; set; }
 
     private async Task HandleOnClose()
     {
         await OnClose.InvokeAsync();
     }
 
-    private async Task HandleDeleteNote(Guid id)
+    private async Task HandleDeleteNote(int id)
     {
         await OnDeleteNote.InvokeAsync(id);
     }

@@ -134,7 +134,7 @@
         {
             selectedClient = await ClientService.GetClientAsync(client.Id) ?? new();
             showClientDetailsModal = true;
-            Console.WriteLine($"Cliente selecionado: {selectedClient.FullName}");
+            Console.WriteLine($"Cliente selecionado: {selectedClient.Name!.Concat(selectedClient.SurName!)}");
 
         }
         catch (Exception ex)
@@ -161,7 +161,7 @@
         }
     }
 
-    private async Task HandleDeleteNote(Guid noteId)
+    private async Task HandleDeleteNote(int noteId)
     {
         try
         {

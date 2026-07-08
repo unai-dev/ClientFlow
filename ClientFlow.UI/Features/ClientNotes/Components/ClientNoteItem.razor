@@ -8,5 +8,5 @@
 </div>
 @code {
     [Parameter, EditorRequired] public ClientNoteDTO ClientNote { get; set; }
-    [Parameter, EditorRequired] public EventCallback<Guid> OnDelete { get; set; }
+    [Parameter, EditorRequired] public EventCallback<int> OnDelete { get; set; }
 }

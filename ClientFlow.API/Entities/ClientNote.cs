@@ -1,13 +1,15 @@
-﻿namespace ClientFlow.API.Entities
+﻿using ClientFlow.API.Entities.Common;
+using System.ComponentModel.DataAnnotations;
+
+namespace ClientFlow.API.Entities;
+
+public class ClientNote: BaseEntity
 {
-    public class ClientNote
-    {
-        public Guid Id { get; set; }
+    [Required, MaxLength(255)]
+    public string? Content { get; set; }
 
-        public string? Content { get; set; }
+    // realated properties
+    public Client? Client { get; set; }
+    public int ClientId { get; set; }
 
-        public int ClientId { get; set; }
-        public Client? Client { get; set; }
-
-    }
 }

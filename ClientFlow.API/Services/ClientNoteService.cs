@@ -1,59 +1,54 @@
 ﻿using AutoMapper;
 using ClientFlow.API.Data;
 using ClientFlow.API.Entities;
-using ClientFlow.API.Interfaces;
+using ClientFlow.API.Contracts;
 using ClientFlow.Shared.DTOs.ClientNote;
 using Microsoft.EntityFrameworkCore;
 
-namespace ClientFlow.API.Services
+namespace ClientFlow.API.Services;
+
+public class ClientNoteService : IClientNoteService
 {
-    public class ClientNoteService : IClientNoteService
+    private readonly ApplicationDbContext context;
+    private readonly IMapper mapper;
+
+    public ClientNoteService(ApplicationDbContext context, IMapper mapper)
     {
-        private readonly ApplicationDbContext context;
-        private readonly IMapper mapper;
+        this.context = context;
+        this.mapper = mapper;
+    }
 
-        public ClientNoteService(ApplicationDbContext context, IMapper mapper)
+    public async Task<IEnumerable<ClientNoteDTO>> GetClientNotesAsync(int clientId) =>
+        mapper.Map<IEnumerable<ClientNoteDTO>>(await context.ClientNotes.Where(x => x.ClientId == clientId).ToListAsync());
+    
+
+    public async Task<ClientNoteDTO> CreateClientNoteAsync(int clientId, CreateClientNoteDTO clientNoteDTO)
+    {
+        var client = await context.Clients.AnyAsync(x => x.Id == clientId);
+
+        if (!client)
         {
-            this.context = context;
-            this.mapper = mapper;
+            return null!;
         }
 
-        public async Task<IEnumerable<ClientNoteDTO>> GetClientNotesAsync(int clientId)
-        {
-            var notes = await context.ClientNotes.Where(x => x.ClientId == clientId).ToListAsync();
+        var note = mapper.Map<ClientNote>(clientNoteDTO);
 
-            return mapper.Map<IEnumerable<ClientNoteDTO>>(notes);
-        }
+        note.ClientId = clientId;
 
-        public async Task<ClientNoteDTO> CreateClientNoteAsync(int clientId, CreateClientNoteDTO clientNoteDTO)
-        {
-            var client = await context.Clients.AnyAsync(x => x.Id == clientId);
+        context.Add(note);
 
-            if (!client)
-            {
-                return null!;
-            }
+        await context.SaveChangesAsync();
 
-            var note = mapper.Map<ClientNote>(clientNoteDTO);
+        return mapper.Map<ClientNoteDTO>(note);
+    }
 
-            note.ClientId = clientId;
+    public async Task<bool> DeleteClientNoteAsync(int id)
+    {
 
-            context.Add(note);
+        var result = await context.ClientNotes.Where(x => x.Id == id).ExecuteDeleteAsync();
 
-            await context.SaveChangesAsync();
-
-            return mapper.Map<ClientNoteDTO>(note);
-        }
-
-        public async Task<bool> DeleteClientNoteAsync(Guid id)
-        {
-
-            var result = await context.ClientNotes.Where(x => x.Id == id).ExecuteDeleteAsync();
-
-            return result > 0;
-
-        }
-
+        return result > 0;
 
     }
+
 }

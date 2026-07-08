@@ -1,22 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace ClientFlow.Shared.DTOs.Client
+namespace ClientFlow.Shared.DTOs.Client;
+
+public class CreateClientDTO : BaseCreateDTO
 {
-    public class CreateClientDTO
-    {
-        [Required(ErrorMessage = "The field {0} is required"), MinLength(5)]
-        public string? FullName { get; set; }
+    [Required, MaxLength(55)]
+    public string? Name { get; set; }
+    [Required, MaxLength(55)]
+    public string? SurName { get; set; }
+    [MaxLength(55)]
+    public string? SurName2 { get; set; }
 
-        [Required(ErrorMessage = "The field {0} is required"), EmailAddress]
-        public string? Email { get; set; }
+    [Required, EmailAddress]
+    public string? Email { get; set; }
+    [Required]
+    public int Phone { get; set; }
 
-        public long Phone { get; set; }
+    // company properties
+    [Required, MaxLength(255)]
+    public string? Company { get; set; }
+    [Required, MaxLength(255)]
+    public string? Position { get; set; }
 
-        public string? Company { get; set; }
-        public string? Position { get; set; }
-
-    }
 }

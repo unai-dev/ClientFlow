@@ -16,7 +16,7 @@ namespace ClientFlow.UI.Features.Client.Services
 
         public async Task<List<ClientDTO?>> GetClientsAsync()
         {
-            return await httpClient.GetFromJsonAsync<List<ClientDTO?>>("clients");
+            return await httpClient.GetFromJsonAsync<List<ClientDTO?>>("clients") ?? new List<ClientDTO>()!;
         }
 
         public async Task<ClientDTO?> GetClientAsync(int id)

@@ -1,24 +1,20 @@
 ﻿using ClientFlow.Shared.DTOs.ClientNote;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
-namespace ClientFlow.Shared.DTOs.Client
+namespace ClientFlow.Shared.DTOs.Client;
+
+public class ClientDTO: BaseGetDTO
 {
-    public class ClientDTO
-    {
-        public int Id { get; set; }
+    public string? Name { get; set; }
+    public string? SurName { get; set; }
+    public string? SurName2 { get; set; }
 
-        public string? FullName { get; set; }
+    public string? Email { get; set; }
 
-        public string? Email { get; set; }
+    public int? Phone { get; set; }
 
-        public long? Phone { get; set; }
+    public string? Company { get; set; }
+    public string? Position { get; set; }
 
-        public string? Company { get; set; }
-        public string? Position { get; set; }
-
-        public List<ClientNoteDTO> ClientNotes { get; set; } = new List<ClientNoteDTO>();
-    }
+    public List<ClientNoteDTO> ClientNotes { get; set; } = new List<ClientNoteDTO>();
 }

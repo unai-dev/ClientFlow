@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ClientFlow.Shared.DTOs.ClientNote
+﻿namespace ClientFlow.Shared.DTOs.ClientNote
 {
-    public class ClientNoteDTO
+    public class ClientNoteDTO: BaseGetDTO
     {
-        public Guid Id { get; set; }
-
         public string? Content { get; set; }
 
-        public int ClientId { get; set; }
+        public string? ClientNickName { get; set; }
     }
 }
